@@ -1,0 +1,51 @@
+{
+    "name": "phattarachai/watchtower-core",
+    "description": "Framework-agnostic core for Watchtower: Sentry envelope parsing, event fingerprinting and shared value helpers.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "sentry",
+        "watchtower",
+        "envelope",
+        "fingerprint",
+        "error-tracking",
+        "exception-tracking"
+    ],
+    "authors": [
+        {
+            "name": "Phattarachai Chaimongkol",
+            "email": "pc@phattarachai.dev"
+        }
+    ],
+    "require": {
+        "php": "^8.4",
+        "ext-json": "*",
+        "ext-zlib": "*"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.24",
+        "pestphp/pest": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Phattarachai\\WatchtowerCore\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Phattarachai\\WatchtowerCore\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
