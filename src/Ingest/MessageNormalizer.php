@@ -57,7 +57,7 @@ class MessageNormalizer
             $message,
         ) ?? $message;
 
-        return preg_replace('/\$[A-Za-z_][A-Za-z0-9_]*/', '\$<VAR>', $out) ?? $out;
+        return preg_replace('/\$[A-Za-z_]\w*/', '\$<VAR>', $out) ?? $out;
     }
 
     public function looksLikePhpEngineError(string $message): bool
@@ -66,16 +66,54 @@ class MessageNormalizer
     }
 
     /**
-     * Strip bind values from Laravel QueryException-style messages.
+     * Strip the volatile tail from Laravel/PDO QueryException messages so the
+     * stable "SQLSTATE[code]: category" prefix survives.
      *
      * Example input:
      *   SQLSTATE[42S22]: ...: select * from "users" where "id" = ? (Connection: pgsql, ..., Bindings: [123])
      */
     public function normalizeSql(string $message): string
     {
-        $out = preg_replace('/\(Connection:\s*[^)]+\)/i', '', $message) ?? $message;
-        $out = preg_replace('/\(Bindings:\s*\[[^\]]*\]\)/i', '', $out) ?? $out;
+        // Postgres appends a "CONTEXT: ..." detail line carrying the offending
+        // parameter value, and Laravel appends a "(Connection: ..., SQL: ...)" /
+        // "(Bindings: [...])" suffix. Both are the message tail; nested ")" inside
+        // SQL functions like COALESCE(...) make a lazy strip stop short, so cut
+        // from the marker to end of string.
+        $out = preg_replace('/\R+\s*CONTEXT:.*$/is', '', $message) ?? $message;
+        $out = preg_replace('/\s*\((?:Connection|Bindings):.*$/is', '', $out) ?? $out;
 
-        return trim($this->normalize($out));
+        return trim($this->preserveSqlState($out, fn (string $s): string => $this->normalize($s)));
+    }
+
+    /**
+     * Extract the SQLSTATE code (e.g. "SQLSTATE[22008]") from a driver message,
+     * or null when the message carries none.
+     */
+    public function sqlStateCode(string $message): ?string
+    {
+        if (preg_match('/SQLSTATE\[[0-9A-Za-z]+\]/', $message, $m) === 1) {
+            return $m[0];
+        }
+
+        return null;
+    }
+
+    /**
+     * Run $transform over the message with the SQLSTATE code masked, so the
+     * integer collapse rule keeps "SQLSTATE[22008]" intact instead of mangling
+     * the numeric code to "SQLSTATE[<N>]".
+     *
+     * @param  callable(string): string  $transform
+     */
+    private function preserveSqlState(string $message, callable $transform): string
+    {
+        $code = $this->sqlStateCode($message);
+        if ($code === null) {
+            return $transform($message);
+        }
+
+        $placeholder = '<<SQLSTATE>>';
+
+        return str_replace($placeholder, $code, $transform(str_replace($code, $placeholder, $message)));
     }
 }
