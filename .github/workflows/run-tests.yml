@@ -1,0 +1,28 @@
+name: run-tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        stability: [prefer-lowest, prefer-stable]
+    name: P8.4 - ${{ matrix.stability }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: json, zlib, mbstring
+          coverage: none
+      - run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
+      - run: vendor/bin/pint --test
+      - run: vendor/bin/pest
