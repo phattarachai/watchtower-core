@@ -276,3 +276,47 @@ it('leaves Class::method() unchanged for non-engine exceptions', function () {
     expect($normalizer->normalizePhpError($msg))->toBe($msg)
         ->and($normalizer->normalize($msg))->toBe($msg);
 });
+
+it('keeps a memory size and a date readable in the title', function () {
+    $fp = new Fingerprinter(new MessageNormalizer);
+
+    $memory = makeEvent(['exception' => ['values' => [[
+        'type' => 'Symfony\\Component\\ErrorHandler\\Error\\FatalError',
+        'value' => 'Allowed memory size of 134217728 bytes exhausted (tried to allocate 20480 bytes)',
+    ]]]]);
+    $date = makeEvent(['exception' => ['values' => [[
+        'type' => 'Carbon\\Exceptions\\InvalidFormatException',
+        'value' => 'Could not parse "2026-10-04": no slot on that day',
+    ]]]]);
+
+    expect($fp->title($memory))->toBe('Symfony\\Component\\ErrorHandler\\Error\\FatalError: Allowed memory size of <N> bytes exhausted (tried to allocate <N> bytes)')
+        ->and($fp->title($date))->toBe('Carbon\\Exceptions\\InvalidFormatException: Could not parse "<DATE>": no slot on that day');
+});
+
+it('still masks real hashes, UUIDs and emails in the title', function () {
+    $fp = new Fingerprinter(new MessageNormalizer);
+
+    $event = makeEvent(['exception' => ['values' => [[
+        'value' => 'User abc123def4567890 (somchai@example.com, 9f8e7d6c-1a2b-4c3d-8e9f-0a1b2c3d4e5f) not found',
+    ]]]]);
+
+    expect($fp->title($event))->toBe('App\\Exceptions\\UserNotFound: User <HASH> (<EMAIL>, <UUID>) not found');
+});
+
+it('leaves the grouping key unchanged when the readable title rules apply', function (string $platform, string $value, string $releasedFingerprint) {
+    $fp = new Fingerprinter(new MessageNormalizer);
+
+    $event = ['platform' => $platform, 'exception' => ['values' => [[
+        'type' => 'RuntimeException',
+        'value' => $value,
+        'stacktrace' => ['frames' => [['filename' => '/srv/app/app/Jobs/Export.php', 'function' => 'handle', 'lineno' => 41, 'in_app' => true]]],
+    ]]]];
+
+    expect($fp->compute($event))->toBe($releasedFingerprint);
+})->with([
+    // Fingerprints as computed by v1.1.0 — a mismatch means stored issues regroup.
+    'memory size, php' => ['php', 'Allowed memory size of 134217728 bytes exhausted (tried to allocate 20480 bytes)', '2bfe93cd2e08cc6f65bc81a9f4e48954'],
+    'memory size, js' => ['javascript', 'Allowed memory size of 134217728 bytes exhausted (tried to allocate 20480 bytes)', '220c8a15c036e0ccf639891a597ab003'],
+    'date, php' => ['php', 'Could not parse "2026-10-04": no slot on that day', '8e75dae0ba70c48c0efa668a155649d1'],
+    'date, js' => ['javascript', 'Could not parse "2026-10-04": no slot on that day', 'c83496b4465b7879f66bd29fb5f297ae'],
+]);

@@ -42,7 +42,7 @@ class Fingerprinter
         $message = $this->resolveMessage($event, $exception);
         $class = (string) ($exception['type'] ?? '');
 
-        $message = trim($this->normalizeMessage($class, $message));
+        $message = trim($this->normalizeMessage($class, $message, readable: true));
         if ($message === '') {
             return $class !== '' ? $class : 'Unknown error';
         }
@@ -220,17 +220,20 @@ class Fingerprinter
         return basename($path);
     }
 
-    private function normalizeMessage(string $exceptionClass, string $message): string
+    /**
+     * @param  bool  $readable  the title's rules; the fingerprint always uses the grouping ones
+     */
+    private function normalizeMessage(string $exceptionClass, string $message, bool $readable = false): string
     {
         if ($exceptionClass === self::QUERY_EXCEPTION || str_contains($message, 'SQLSTATE[')) {
-            return $this->normalizer->normalizeSql($message);
+            return $this->normalizer->normalizeSql($message, $readable);
         }
 
         if ($this->isPhpEngineError($exceptionClass, $message)) {
-            return $this->normalizer->normalize($this->normalizer->normalizePhpError($message));
+            return $this->normalizer->normalize($this->normalizer->normalizePhpError($message), $readable);
         }
 
-        return $this->normalizer->normalize($message);
+        return $this->normalizer->normalize($message, $readable);
     }
 
     /**
