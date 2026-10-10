@@ -26,10 +26,34 @@ class MessageNormalizer
         '/\b\d{3,}\b/' => '<N>',
     ];
 
-    public function normalize(string $message): string
+    /**
+     * The issue title's rules. They mask the same per-event values as
+     * REPLACEMENTS, but read better: a bare date becomes `<DATE>` rather than
+     * `<N>-10-04`, and a hash needs both a digit and a letter, so a pure
+     * decimal such as a memory size falls through to `<N>`. The title is
+     * rewritten on every event, so it still has to be stable.
+     */
+    private const array READABLE_REPLACEMENTS = [
+        '/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i' => '<UUID>',
+        '/\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+\-]\d{2}:?\d{2})?/' => '<TIME>',
+        '/\b\d{4}-\d{2}-\d{2}\b/' => '<DATE>',
+        '/[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}/' => '<EMAIL>',
+        '/\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{8,}\b/i' => '<HASH>',
+        '#/(storage|tmp|cache)/[^\s\'"]+#' => '/$1/<PATH>',
+        '/"([^"\\\\]|\\\\.){20,}"/' => '"<STR>"',
+        "/'([^'\\\\]|\\\\.){20,}'/" => "'<STR>'",
+        '/\b\d{3,}\b/' => '<N>',
+    ];
+
+    /**
+     * @param  bool  $readable  use the issue-title rules instead of the grouping ones. The
+     *                          grouping rules never change, since a change would regroup
+     *                          every stored issue.
+     */
+    public function normalize(string $message, bool $readable = false): string
     {
         $out = $message;
-        foreach (self::REPLACEMENTS as $pattern => $replacement) {
+        foreach ($readable ? self::READABLE_REPLACEMENTS : self::REPLACEMENTS as $pattern => $replacement) {
             $out = (string) preg_replace($pattern, $replacement, $out);
         }
 
@@ -72,7 +96,7 @@ class MessageNormalizer
      * Example input:
      *   SQLSTATE[42S22]: ...: select * from "users" where "id" = ? (Connection: pgsql, ..., Bindings: [123])
      */
-    public function normalizeSql(string $message): string
+    public function normalizeSql(string $message, bool $readable = false): string
     {
         // Postgres appends a "CONTEXT: ..." detail line carrying the offending
         // parameter value, and Laravel appends a "(Connection: ..., SQL: ...)" /
@@ -82,7 +106,7 @@ class MessageNormalizer
         $out = preg_replace('/\R+\s*CONTEXT:.*$/is', '', $message) ?? $message;
         $out = preg_replace('/\s*\((?:Connection|Bindings):.*$/is', '', $out) ?? $out;
 
-        return trim($this->preserveSqlState($out, fn (string $s): string => $this->normalize($s)));
+        return trim($this->preserveSqlState($out, fn (string $s): string => $this->normalize($s, $readable)));
     }
 
     /**
