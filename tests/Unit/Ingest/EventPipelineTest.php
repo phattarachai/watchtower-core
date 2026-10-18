@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Phattarachai\WatchtowerCore\Ingest\BotDetector;
 use Phattarachai\WatchtowerCore\Ingest\EventNormalizer;
 use Phattarachai\WatchtowerCore\Ingest\EventPipeline;
 use Phattarachai\WatchtowerCore\Ingest\EventScrubber;
@@ -56,4 +57,20 @@ it('computes the title from the prepared event', function () {
 
     expect($pipeline->title($pipeline->prepare(['exception' => ['values' => [['type' => 'LogicException', 'value' => 'nope']]]])))
         ->toBe('LogicException: nope');
+});
+
+it('flags crawler browser events only when given a BotDetector', function () {
+    $event = [
+        'platform' => 'javascript',
+        'request' => ['headers' => ['User-Agent' => 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)']],
+    ];
+    $detecting = new EventPipeline(
+        new EventScrubber(['cookie'], ['password']),
+        new EventNormalizer(['platform', 'request'], []),
+        botDetector: new BotDetector,
+    );
+
+    expect($detecting->isFromBot($event))->toBeTrue()
+        ->and($detecting->isFromBot($detecting->prepare($event)))->toBeTrue()
+        ->and(pipeline()->isFromBot($event))->toBeFalse();
 });

@@ -320,3 +320,45 @@ it('leaves the grouping key unchanged when the readable title rules apply', func
     'date, php' => ['php', 'Could not parse "2026-10-04": no slot on that day', '8e75dae0ba70c48c0efa668a155649d1'],
     'date, js' => ['javascript', 'Could not parse "2026-10-04": no slot on that day', 'c83496b4465b7879f66bd29fb5f297ae'],
 ]);
+
+it('groups chunk-load failures into one issue whatever the asset hash or browser', function () {
+    $fp = new Fingerprinter(new MessageNormalizer);
+    $page = 'https://site.com/posts/hello';
+
+    $fingerprints = array_map(fn (array $event): string => $fp->compute($event), [
+        makeBrowserEvent('Failed to fetch dynamically imported module: https://site.com/build/assets/Show-CMSx3ifN.js', $page, 1, 'TypeError'),
+        makeBrowserEvent('Failed to fetch dynamically imported module: https://site.com/build/assets/Index-BG_wbAkN.js', $page, 1, 'TypeError'),
+        makeBrowserEvent('Importing a module script failed.', $page, 1, 'TypeError'),
+        makeBrowserEvent('error loading dynamically imported module: https://site.com/build/assets/Show-CMSx3ifN.js', $page, 1, 'TypeError'),
+        makeBrowserEvent('Unable to preload CSS for /build/assets/app-Bx12cd34.css', $page, 1, 'Error'),
+    ]);
+
+    expect(array_unique($fingerprints))->toHaveCount(1);
+});
+
+it('groups server-side chunk-load failures with the browser SDK fingerprint', function () {
+    $fp = new Fingerprinter(new MessageNormalizer);
+
+    $old = makeBrowserEvent('Failed to fetch dynamically imported module: https://site.com/build/assets/Show-CMSx3ifN.js', 'https://site.com/', 1, 'TypeError');
+    $new = [...$old, 'fingerprint' => [Fingerprinter::CHUNK_LOAD_FINGERPRINT]];
+
+    expect($fp->compute($old))->toBe($fp->compute($new));
+});
+
+it('titles a chunk-load failure without the hashed asset URL', function () {
+    $fp = new Fingerprinter(new MessageNormalizer);
+
+    expect($fp->title(makeBrowserEvent('Failed to fetch dynamically imported module: https://site.com/build/assets/Show-CMSx3ifN.js', 'https://site.com/', 1, 'TypeError')))
+        ->toBe('TypeError: Failed to fetch dynamically imported module')
+        ->and($fp->title(makeBrowserEvent('Importing a module script failed.', 'https://site.com/', 1, 'TypeError')))
+        ->toBe('TypeError: Importing a module script failed');
+});
+
+it('leaves a server-side message that mentions a module import alone', function () {
+    $fp = new Fingerprinter(new MessageNormalizer);
+
+    $event = makeEvent(['exception' => ['values' => [['value' => 'Failed to fetch dynamically imported module: x.js']]]]);
+
+    expect($fp->compute($event))->not->toBe(md5(Fingerprinter::CHUNK_LOAD_FINGERPRINT))
+        ->and($fp->title($event))->toBe('App\\Exceptions\\UserNotFound: Failed to fetch dynamically imported module: x.js');
+});
