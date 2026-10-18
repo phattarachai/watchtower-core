@@ -7,10 +7,24 @@ namespace Phattarachai\WatchtowerCore\Ingest;
 class Fingerprinter
 {
     /**
+     * Every chunk-load failure groups here, whichever asset and browser. It hashes
+     * the same as the `['chunk-load-error']` fingerprint watchtower-laravel's
+     * browser SDK sends, so old and new clients land in the same issue.
+     */
+    public const string CHUNK_LOAD_FINGERPRINT = 'chunk-load-error';
+
+    /**
      * FQCN of Laravel's query exception, matched as a string so core stays
      * framework-free (no illuminate/database dependency).
      */
     private const string QUERY_EXCEPTION = 'Illuminate\\Database\\QueryException';
+
+    /**
+     * A browser failing to load a code-split chunk, in each engine's wording:
+     * Chrome, Firefox, Safari, and Vite's CSS preload helper. Chrome, Firefox and
+     * Vite append the asset URL, whose content hash changes on every deploy.
+     */
+    private const string CHUNK_LOAD_ERROR = '~(Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed|Unable to preload CSS)~i';
 
     public function __construct(private readonly MessageNormalizer $normalizer) {}
 
@@ -28,6 +42,10 @@ class Fingerprinter
         $exceptionClass = (string) ($exception['type'] ?? 'UnknownException');
         $message = $this->resolveMessage($event, $exception);
 
+        if ($this->chunkLoadPhrase($event, $message) !== null) {
+            return md5(self::CHUNK_LOAD_FINGERPRINT);
+        }
+
         return md5(implode('|', $this->fingerprintParts($event, $exception, $exceptionClass, $message)));
     }
 
@@ -41,6 +59,12 @@ class Fingerprinter
         $exception = $this->topException($event);
         $message = $this->resolveMessage($event, $exception);
         $class = (string) ($exception['type'] ?? '');
+
+        // Drop the hashed asset URL, so the title doesn't name one deploy's chunk.
+        $chunkLoadPhrase = $this->chunkLoadPhrase($event, $message);
+        if ($chunkLoadPhrase !== null) {
+            return $class !== '' ? "{$class}: {$chunkLoadPhrase}" : $chunkLoadPhrase;
+        }
 
         $message = trim($this->normalizeMessage($class, $message, readable: true));
         if ($message === '') {
@@ -104,6 +128,20 @@ class Fingerprinter
         }
 
         return $this->normalizer->sqlStateCode($message);
+    }
+
+    /**
+     * The engine's chunk-load wording when a browser event is one, else null.
+     *
+     * @param  array<string, mixed>  $event
+     */
+    private function chunkLoadPhrase(array $event, string $message): ?string
+    {
+        if (! $this->isBrowserError($event) || preg_match(self::CHUNK_LOAD_ERROR, $message, $m) !== 1) {
+            return null;
+        }
+
+        return $m[1];
     }
 
     /**
