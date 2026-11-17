@@ -1,0 +1,727 @@
+[
+    {
+        "type": 0,
+        "data": [],
+        "timestamp": 1794903664834
+    },
+    {
+        "type": 5,
+        "timestamp": 1794903664834,
+        "data": {
+            "tag": "options",
+            "payload": {
+                "shouldRecordCanvas": false,
+                "sessionSampleRate": 0,
+                "errorSampleRate": 1,
+                "useCompressionOption": true,
+                "blockAllMedia": true,
+                "maskAllText": true,
+                "maskAllInputs": true,
+                "useCompression": false,
+                "networkDetailHasUrls": false,
+                "networkCaptureBodies": true,
+                "networkRequestHasHeaders": true,
+                "networkResponseHasHeaders": true
+            }
+        }
+    },
+    {
+        "type": 1,
+        "data": [],
+        "timestamp": 1794903664834
+    },
+    {
+        "type": 4,
+        "data": {
+            "href": "http://localhost:8765/?mode=buffer",
+            "width": 1024,
+            "height": 768
+        },
+        "timestamp": 1794903664834
+    },
+    {
+        "type": 2,
+        "data": {
+            "node": {
+                "type": 0,
+                "childNodes": [
+                    {
+                        "type": 1,
+                        "name": "html",
+                        "publicId": "",
+                        "systemId": "",
+                        "id": 2
+                    },
+                    {
+                        "type": 2,
+                        "tagName": "html",
+                        "attributes": [],
+                        "childNodes": [
+                            {
+                                "type": 2,
+                                "tagName": "head",
+                                "attributes": [],
+                                "childNodes": [
+                                    {
+                                        "type": 2,
+                                        "tagName": "meta",
+                                        "attributes": {
+                                            "charset": "utf-8"
+                                        },
+                                        "childNodes": [],
+                                        "id": 5
+                                    },
+                                    {
+                                        "type": 2,
+                                        "tagName": "title",
+                                        "attributes": [],
+                                        "childNodes": [
+                                            {
+                                                "type": 3,
+                                                "textContent": "****** *******",
+                                                "id": 7
+                                            }
+                                        ],
+                                        "id": 6
+                                    }
+                                ],
+                                "id": 4
+                            },
+                            {
+                                "type": 3,
+                                "textContent": "\n",
+                                "id": 8
+                            },
+                            {
+                                "type": 2,
+                                "tagName": "body",
+                                "attributes": {
+                                    "style": "font-family:sans-serif; padding:24px"
+                                },
+                                "childNodes": [
+                                    {
+                                        "type": 3,
+                                        "textContent": "\n",
+                                        "id": 10
+                                    },
+                                    {
+                                        "type": 2,
+                                        "tagName": "h1",
+                                        "attributes": [],
+                                        "childNodes": [
+                                            {
+                                                "type": 3,
+                                                "textContent": "****** ******* **** *",
+                                                "id": 12
+                                            },
+                                            {
+                                                "type": 2,
+                                                "tagName": "span",
+                                                "attributes": {
+                                                    "id": "mode"
+                                                },
+                                                "childNodes": [
+                                                    {
+                                                        "type": 3,
+                                                        "textContent": "******",
+                                                        "id": 14
+                                                    }
+                                                ],
+                                                "id": 13
+                                            },
+                                            {
+                                                "type": 3,
+                                                "textContent": "*",
+                                                "id": 15
+                                            }
+                                        ],
+                                        "id": 11
+                                    },
+                                    {
+                                        "type": 3,
+                                        "textContent": "\n",
+                                        "id": 16
+                                    },
+                                    {
+                                        "type": 2,
+                                        "tagName": "p",
+                                        "attributes": [],
+                                        "childNodes": [
+                                            {
+                                                "type": 3,
+                                                "textContent": "**** ************** ***** ******** **** **** ***** ******",
+                                                "id": 18
+                                            }
+                                        ],
+                                        "id": 17
+                                    },
+                                    {
+                                        "type": 3,
+                                        "textContent": "\n",
+                                        "id": 19
+                                    },
+                                    {
+                                        "type": 2,
+                                        "tagName": "label",
+                                        "attributes": [],
+                                        "childNodes": [
+                                            {
+                                                "type": 3,
+                                                "textContent": "***** ",
+                                                "id": 21
+                                            },
+                                            {
+                                                "type": 2,
+                                                "tagName": "input",
+                                                "attributes": {
+                                                    "id": "email",
+                                                    "type": "email",
+                                                    "placeholder": "***************"
+                                                },
+                                                "childNodes": [],
+                                                "id": 22
+                                            }
+                                        ],
+                                        "id": 20
+                                    },
+                                    {
+                                        "type": 3,
+                                        "textContent": "\n",
+                                        "id": 23
+                                    },
+                                    {
+                                        "type": 2,
+                                        "tagName": "label",
+                                        "attributes": [],
+                                        "childNodes": [
+                                            {
+                                                "type": 3,
+                                                "textContent": "******** ",
+                                                "id": 25
+                                            },
+                                            {
+                                                "type": 2,
+                                                "tagName": "input",
+                                                "attributes": {
+                                                    "id": "pw",
+                                                    "type": "password"
+                                                },
+                                                "childNodes": [],
+                                                "id": 26
+                                            }
+                                        ],
+                                        "id": 24
+                                    },
+                                    {
+                                        "type": 3,
+                                        "textContent": "\n",
+                                        "id": 27
+                                    },
+                                    {
+                                        "type": 2,
+                                        "tagName": "button",
+                                        "attributes": {
+                                            "id": "add"
+                                        },
+                                        "childNodes": [
+                                            {
+                                                "type": 3,
+                                                "textContent": "*** ****",
+                                                "id": 29
+                                            }
+                                        ],
+                                        "id": 28
+                                    },
+                                    {
+                                        "type": 3,
+                                        "textContent": " ",
+                                        "id": 30
+                                    },
+                                    {
+                                        "type": 2,
+                                        "tagName": "button",
+                                        "attributes": {
+                                            "id": "boom"
+                                        },
+                                        "childNodes": [
+                                            {
+                                                "type": 3,
+                                                "textContent": "***** *****",
+                                                "id": 32
+                                            }
+                                        ],
+                                        "id": 31
+                                    },
+                                    {
+                                        "type": 3,
+                                        "textContent": "\n",
+                                        "id": 33
+                                    },
+                                    {
+                                        "type": 2,
+                                        "tagName": "ul",
+                                        "attributes": {
+                                            "id": "list"
+                                        },
+                                        "childNodes": [],
+                                        "id": 34
+                                    },
+                                    {
+                                        "type": 3,
+                                        "textContent": "\n",
+                                        "id": 35
+                                    },
+                                    {
+                                        "type": 2,
+                                        "tagName": "img",
+                                        "attributes": {
+                                            "rr_width": "40px",
+                                            "rr_height": "40px"
+                                        },
+                                        "childNodes": [],
+                                        "id": 36
+                                    },
+                                    {
+                                        "type": 3,
+                                        "textContent": "\n",
+                                        "id": 37
+                                    },
+                                    {
+                                        "type": 3,
+                                        "textContent": "\n",
+                                        "id": 38
+                                    }
+                                ],
+                                "id": 9
+                            }
+                        ],
+                        "id": 3
+                    }
+                ],
+                "id": 1
+            },
+            "initialOffset": {
+                "left": 0,
+                "top": 0
+            }
+        },
+        "timestamp": 1794903664835
+    },
+    {
+        "type": 5,
+        "timestamp": 1794903673.264,
+        "data": {
+            "tag": "breadcrumb",
+            "payload": {
+                "timestamp": 1794903673.264,
+                "type": "default",
+                "category": "ui.focus"
+            }
+        }
+    },
+    {
+        "type": 3,
+        "data": {
+            "source": 2,
+            "type": 1,
+            "id": 28,
+            "x": 488,
+            "y": 157
+        },
+        "timestamp": 1794903673265
+    },
+    {
+        "type": 3,
+        "data": {
+            "source": 2,
+            "type": 5,
+            "id": 28
+        },
+        "timestamp": 1794903673265
+    },
+    {
+        "type": 3,
+        "data": {
+            "source": 2,
+            "type": 0,
+            "id": 28,
+            "x": 488,
+            "y": 157
+        },
+        "timestamp": 1794903673265
+    },
+    {
+        "type": 5,
+        "timestamp": 1794903673265,
+        "data": {
+            "tag": "breadcrumb",
+            "payload": {
+                "timestamp": 1794903673.265,
+                "type": "default",
+                "category": "ui.click",
+                "message": "body > button#add",
+                "data": {
+                    "nodeId": 28,
+                    "node": {
+                        "id": 28,
+                        "tagName": "button",
+                        "textContent": "*** ****",
+                        "attributes": {
+                            "id": "add"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "type": 3,
+        "data": {
+            "source": 2,
+            "type": 2,
+            "id": 28,
+            "x": 488,
+            "y": 157,
+            "pointerType": 0
+        },
+        "timestamp": 1794903673266
+    },
+    {
+        "type": 3,
+        "data": {
+            "source": 0,
+            "texts": [],
+            "attributes": [],
+            "removes": [],
+            "adds": [
+                {
+                    "parentId": 34,
+                    "nextId": null,
+                    "node": {
+                        "type": 2,
+                        "tagName": "li",
+                        "attributes": [],
+                        "childNodes": [],
+                        "id": 39
+                    }
+                },
+                {
+                    "parentId": 39,
+                    "nextId": null,
+                    "node": {
+                        "type": 3,
+                        "textContent": "**** ***** ** ************************",
+                        "id": 40
+                    }
+                }
+            ]
+        },
+        "timestamp": 1794903673266
+    },
+    {
+        "type": 5,
+        "timestamp": 1794903673.266,
+        "data": {
+            "tag": "performanceSpan",
+            "payload": {
+                "op": "resource.fetch",
+                "description": "/ping?x=1",
+                "startTimestamp": 1794903673.266,
+                "endTimestamp": 1794903673.2726002,
+                "data": {
+                    "method": "GET",
+                    "statusCode": 200,
+                    "request": {
+                        "headers": [],
+                        "_meta": {
+                            "warnings": [
+                                "URL_SKIPPED"
+                            ]
+                        }
+                    },
+                    "response": {
+                        "headers": [],
+                        "size": 4,
+                        "_meta": {
+                            "warnings": [
+                                "URL_SKIPPED"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "type": 3,
+        "data": {
+            "source": 2,
+            "type": 1,
+            "id": 28,
+            "x": 488,
+            "y": 157
+        },
+        "timestamp": 1794903676275
+    },
+    {
+        "type": 3,
+        "data": {
+            "source": 2,
+            "type": 0,
+            "id": 28,
+            "x": 488,
+            "y": 157
+        },
+        "timestamp": 1794903676275
+    },
+    {
+        "type": 5,
+        "timestamp": 1794903676276,
+        "data": {
+            "tag": "breadcrumb",
+            "payload": {
+                "timestamp": 1794903676.276,
+                "type": "default",
+                "category": "ui.click",
+                "message": "body > button#add",
+                "data": {
+                    "nodeId": 28,
+                    "node": {
+                        "id": 28,
+                        "tagName": "button",
+                        "textContent": "*** ****",
+                        "attributes": {
+                            "id": "add"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "type": 3,
+        "data": {
+            "source": 2,
+            "type": 2,
+            "id": 28,
+            "x": 488,
+            "y": 157,
+            "pointerType": 0
+        },
+        "timestamp": 1794903676276
+    },
+    {
+        "type": 3,
+        "data": {
+            "source": 0,
+            "texts": [],
+            "attributes": [],
+            "removes": [],
+            "adds": [
+                {
+                    "parentId": 34,
+                    "nextId": null,
+                    "node": {
+                        "type": 2,
+                        "tagName": "li",
+                        "attributes": [],
+                        "childNodes": [],
+                        "id": 41
+                    }
+                },
+                {
+                    "parentId": 41,
+                    "nextId": null,
+                    "node": {
+                        "type": 3,
+                        "textContent": "**** ***** ** ************************",
+                        "id": 42
+                    }
+                }
+            ]
+        },
+        "timestamp": 1794903676276
+    },
+    {
+        "type": 5,
+        "timestamp": 1794903676.2762,
+        "data": {
+            "tag": "performanceSpan",
+            "payload": {
+                "op": "resource.fetch",
+                "description": "/ping?x=1",
+                "startTimestamp": 1794903676.2762,
+                "endTimestamp": 1794903676.2812,
+                "data": {
+                    "method": "GET",
+                    "statusCode": 200,
+                    "request": {
+                        "headers": [],
+                        "_meta": {
+                            "warnings": [
+                                "URL_SKIPPED"
+                            ]
+                        }
+                    },
+                    "response": {
+                        "headers": [],
+                        "size": 4,
+                        "_meta": {
+                            "warnings": [
+                                "URL_SKIPPED"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "type": 3,
+        "data": {
+            "source": 2,
+            "type": 1,
+            "id": 31,
+            "x": 570,
+            "y": 157
+        },
+        "timestamp": 1794903678287
+    },
+    {
+        "type": 3,
+        "data": {
+            "source": 2,
+            "type": 6,
+            "id": 28
+        },
+        "timestamp": 1794903678287
+    },
+    {
+        "type": 3,
+        "data": {
+            "source": 2,
+            "type": 5,
+            "id": 31
+        },
+        "timestamp": 1794903678287
+    },
+    {
+        "type": 3,
+        "data": {
+            "source": 2,
+            "type": 0,
+            "id": 31,
+            "x": 570,
+            "y": 157
+        },
+        "timestamp": 1794903678287
+    },
+    {
+        "type": 5,
+        "timestamp": 1794903678287,
+        "data": {
+            "tag": "breadcrumb",
+            "payload": {
+                "timestamp": 1794903678.287,
+                "type": "default",
+                "category": "ui.click",
+                "message": "body > button#boom",
+                "data": {
+                    "nodeId": 31,
+                    "node": {
+                        "id": 31,
+                        "tagName": "button",
+                        "textContent": "***** *****",
+                        "attributes": {
+                            "id": "boom"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "type": 3,
+        "data": {
+            "source": 2,
+            "type": 2,
+            "id": 31,
+            "x": 570,
+            "y": 157,
+            "pointerType": 0
+        },
+        "timestamp": 1794903678287
+    },
+    {
+        "type": 5,
+        "timestamp": 1794903664.814,
+        "data": {
+            "tag": "performanceSpan",
+            "payload": {
+                "op": "navigation.reload",
+                "description": "http://localhost:8765/?mode=buffer",
+                "startTimestamp": 1794903664.814,
+                "endTimestamp": 1794903664.8345,
+                "data": {
+                    "size": 1001,
+                    "decodedBodySize": 701,
+                    "encodedBodySize": 701,
+                    "duration": 21.299999952316284,
+                    "domInteractive": 20.100000023841858,
+                    "domContentLoadedEventStart": 20.100000023841858,
+                    "domContentLoadedEventEnd": 20.200000047683716,
+                    "loadEventStart": 20.5,
+                    "loadEventEnd": 21.299999952316284,
+                    "domComplete": 20.5,
+                    "redirectCount": 0
+                }
+            }
+        }
+    },
+    {
+        "type": 5,
+        "timestamp": 1794903673.27,
+        "data": {
+            "tag": "performanceSpan",
+            "payload": {
+                "op": "paint",
+                "description": "first-paint",
+                "startTimestamp": 1794903673.27,
+                "endTimestamp": 1794903673.27
+            }
+        }
+    },
+    {
+        "type": 5,
+        "timestamp": 1794903673.27,
+        "data": {
+            "tag": "performanceSpan",
+            "payload": {
+                "op": "paint",
+                "description": "first-contentful-paint",
+                "startTimestamp": 1794903673.27,
+                "endTimestamp": 1794903673.27
+            }
+        }
+    },
+    {
+        "type": 5,
+        "timestamp": 1794903678.307,
+        "data": {
+            "tag": "performanceSpan",
+            "payload": {
+                "op": "memory",
+                "description": "memory",
+                "startTimestamp": 1794903678.307,
+                "endTimestamp": 1794903678.307,
+                "data": {
+                    "memory": {
+                        "jsHeapSizeLimit": 4395630592,
+                        "totalJSHeapSize": 7780840,
+                        "usedJSHeapSize": 5791572
+                    }
+                }
+            }
+        }
+    }
+]
