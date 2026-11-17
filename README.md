@@ -23,6 +23,8 @@ composer require phattarachai/watchtower-core
 | `Ingest\EventNormalizer` | Keeps only allow-listed top-level fields and context keys; strips NUL bytes. |
 | `Ingest\EventTruncator` | Trims an event to a JSON byte budget, Sentry-style: caps strings, keeps the last 100 breadcrumbs, then drops breadcrumb data, `extra`, the request body, frame locals and deep-stack middles until it fits. Tags a trimmed event `watchtower.truncated`. |
 | `Ingest\EventPipeline` | scrub → normalize → truncate, plus the fingerprint and title, and `isFromBot()` when built with a `BotDetector`. Run it **before** queueing an event so secrets and unbounded payloads never reach the queue backend; it is idempotent, so the worker can run it again. |
+| `Replay\ReplayRecording` | Splits a `replay_recording` item into its segment id and body, kept verbatim; `ReplayEncoding::sniff()` names the body zlib (what the browser SDK sends), gzip, plain JSON or unknown by its leading bytes. |
+| `Replay\ReplayEventMeta` | Reads a `replay_event` item into capped, typed fields (replay id, segment, `session`/`buffer`, epoch timestamps, URLs, error ids, environment, release, SDK, user id/email/username, request URL, User-Agent). Drops `trace_ids` and `user.ip_address`; returns null for a malformed id, segment or type. |
 | `Alerts\LevelRanker` | Compares Sentry severity levels against a minimum threshold. |
 | `Support\Gzip` | Decodes a request body that may carry `Content-Encoding: gzip`. Pass `$maxBytes` to cap the inflated size — wire-size limits only see the compressed body. |
 | `Support\DsnParser` | Parses `scheme://public_key@host[:port]/<project id>` into its parts plus a relay URL. |
